@@ -1,0 +1,24 @@
+{
+  "name": "pedal_delivery_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paullim2/pedal_delivery_node.git"
+  },
+  "author": "Sonja Hanemann and Paul Lim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paullim2/pedal_delivery_node/issues"
+  },
+  "homepage": "https://github.com/paullim2/pedal_delivery_node#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "forever": "^4.0.3",
+    "mysql": "^2.18.1"
+  }
+}
