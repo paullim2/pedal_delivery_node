@@ -108,7 +108,7 @@ addRowToTable = (data) => {
 
     // Add the cells to the row 
     row.appendChild(orderDetailsIDCell);
-    row.appendChild(orderIDCell);
+    row.appendChild(orderIDCell); // LOOK into this to not have to refresh
     row.appendChild(foodIDCell);
     row.appendChild(orderQtyCell);
     row.appendChild(unitPriceCell);

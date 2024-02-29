@@ -11,11 +11,39 @@
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr>
-            {{#each data.[0]}}
+
             <th>
-                {{@key}}
+                Order Details ID
             </th>
-            {{/each}}
+
+            <th>
+                Order ID
+            </th>
+
+            <th>
+                Food
+            </th>
+
+            <th>
+                Order Quantity
+            </th>
+
+            <th>
+                Unit Price
+            </th>
+
+            <th>
+                Line Total
+            </th>
+
+            <th>
+                Unit Courier Fee
+            </th>
+
+            <th>
+                Line Fee Total
+            </th>
+
         </tr>
     </thead>
 
@@ -54,7 +82,7 @@
     <select name="input-food_id" id="input-food_id">
         <option value="">Select Food</option>
         {{#each foods}}
-        <option value="{{this.orderdetails_id}}">{{this.food_name}}</option>
+        <option value="{{this.food_id}}">{{this.food_name}}</option>
         {{/each}}
     </select>
 

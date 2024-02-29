@@ -41,6 +41,26 @@ app.get('/', function(req, res)
                 
                 // Save the foods
                 let foods = rows;
+
+                // BEGINNING OF NEW CODE
+
+                // Construct an object for reference in the table
+                // Array.map is awesome for doing something with each
+                // element of an array.
+                let foodmap = {}
+                foods.map(food => {
+                    let food_id = parseInt(food.food_id, 10);
+
+                    foodmap[food_id] = food["food_name"];
+                })
+
+                // Overwrite the homeworld ID with the name of the planet in the people object
+                orderdetails = orderdetails.map(orderdetail => {
+                    return Object.assign(orderdetail, {food_id: foodmap[orderdetail.food_id]})
+                })
+
+                // END OF NEW CODE
+
                 return res.render('index', {data: orderdetails, foods: foods});
             })
         });                                           // will process this file, before sending the finished HTML to the client.
