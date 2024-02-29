@@ -3,7 +3,7 @@
 <p>If you see this text, the server is <strong>definitely</strong> working!</p>
 
 {{!-- Create a table --}}
-<table>
+<table id="orderdetails-table">
 
     {{!-- Header section --}}
     <thead>
@@ -37,3 +37,36 @@
         {{/each}}
     </tbody>
 </table>
+
+<!-- /views/index.hbs -->
+
+{{!-- Form to add a record to the table  --}}
+<h2>Adding Data with AJAX</h2>
+<p>To add a new OrderDetail, please enter the information below and click 'Submit'!</p>
+<form id="add-orderdetails-form-ajax">
+    <label for="input-order_id">Order ID: </label>
+    <input type="number" name="input-order_id" id="input-order_id">
+
+    <label for="input-food_id">Food ID: </label>
+    <input type="number" name="input-food_id" id="input-food_id">
+
+    <label for="input-order_qty">Order Qty: </label>
+    <input type="number" name="input-order_qty" id="input-order_qty">
+
+    <label for="input-unit_price">Unit Price: </label>
+    <input type="number" name="input-unit_price" id="input-unit_price">
+
+    <label for="input-line_total">Line Total: </label>
+    <input type="number" name="input-line_total" id="input-line_total">
+
+    <label for="input-unit_courier_fee">Unit Courier Fee: </label>
+    <input type="number" name="input-unit_courier_fee" id="input-unit_courier_fee">
+
+    <label for="input-line_fee_total">Line Fee Total: </label>
+    <input type="number" name="input-line_fee_total" id="input-line_fee_total">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_orderdetails.js"></script>

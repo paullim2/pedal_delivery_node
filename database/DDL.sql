@@ -73,8 +73,8 @@ CREATE OR REPLACE TABLE OrderDetails (
         unit_courier_fee decimal(6,2) NOT NULL,
         line_fee_total decimal(6,2) NOT NULL,
         PRIMARY KEY (orderdetails_id),
-        FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
-        FOREIGN KEY (food_id) REFERENCES Foods(food_id)
+        -- FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+        -- FOREIGN KEY (food_id) REFERENCES Foods(food_id)
     );
 
 
