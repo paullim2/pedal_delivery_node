@@ -24,14 +24,27 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 */
 app.get('/', function(req, res)
     {  
-        let query1 = "SELECT * FROM OrderDetails;";               // Define our query
+        // Declare Query 1
+        let query1 = "SELECT * FROM OrderDetails;";
 
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+        // Query 2 is the same in both cases
+        let query2 = "SELECT * FROM Foods;";
 
-            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        })                                                      // an object where 'data' is equal to the 'rows' we
-    });                                           // will process this file, before sending the finished HTML to the client.
-
+        // Run the 1st query
+        db.pool.query(query1, function(error, rows, fields){
+            
+            // Save the orderdetails
+            let orderdetails = rows;
+            
+            // Run the second query
+            db.pool.query(query2, (error, rows, fields) => {
+                
+                // Save the foods
+                let foods = rows;
+                return res.render('index', {data: orderdetails, foods: foods});
+            })
+        });                                           // will process this file, before sending the finished HTML to the client.
+    });  
 
 app.post('/add-orderdetails-ajax', function(req, res) 
 {
@@ -115,10 +128,6 @@ app.post('/add-orderdetails-ajax', function(req, res)
         }
     })
 });
-
-
-
-
 
 /*
     LISTENER
