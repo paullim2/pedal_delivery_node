@@ -1,3 +1,7 @@
+/* Date: 02/29/24 */
+/* Citation for the following function: nodejs starter app */
+/* Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ */
+
 // App.js
 
 /*
@@ -164,6 +168,41 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
               res.sendStatus(400);
               }
 
+  })});
+
+  app.put('/put-orderdetails-ajax', function(req,res,next){
+    let data = req.body;
+  
+    let orderdetailsID = parseInt(data.orderdetails_id);
+    let foodID = parseInt(data.food_id);
+  
+    let queryUpdateFood= `UPDATE OrderDetails SET food_id = ? WHERE OrderDetails.orderdetails_id = ?`;
+    let selectFood = `SELECT * FROM orderdetailsID WHERE orderdetails_ID = ?`
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateFood, [foodID, orderDetailsID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectFood, [orderdetailsID], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
   })});
 
 /*

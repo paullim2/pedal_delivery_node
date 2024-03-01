@@ -1,6 +1,6 @@
 <!-- index.hbs -->
-<h1>The server is running!</h1>
-<p>If you see this text, the server is <strong>definitely</strong> working!</p>
+<h1>Pedal Box Delivery</h1>
+<p>This page represents the OrderDetails intersection table.</p>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 {{!-- Create a table --}}
@@ -45,8 +45,7 @@
 <!-- /views/index.hbs -->
 
 {{!-- Form to add a record to the table  --}}
-<h2>Adding Data with AJAX</h2>
-<p>To add a new OrderDetail, please enter the information below and click 'Submit'!</p>
+<h2>Add Order Details</h2>
 <form id="add-orderdetails-form-ajax">
     <label for="input-order_id">Order ID: </label>
     <input type="number" name="input-order_id" id="input-order_id">
@@ -82,3 +81,26 @@
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_orderdetails.js"></script>
+
+<h2>Update Order Details</h2>
+<form id="update-orderdetails-form-ajax">
+
+    <label for="input-orderdetails_id">Order Details ID: </label>
+    <select name="input-orderDetails_id" id="mySelect">
+        <option value="test">Select an Order Detail</option>
+        {{#each data}}
+        <option value="{{this.orderdetails_id}}">{{this.orderdetails_id}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-food_id">Food:</label>
+    <select name="input-food_id" id="input-food_id">
+        <option value="">Select Food</option>
+        {{#each foods}}
+        <option value="{{this.food_id}}">{{this.food_name}}</option>
+        {{/each}}
+    </select>
+    <input type="submit">
+</form>
+
+<script src="./js/update_orderdetails.js"></script>

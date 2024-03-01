@@ -1,3 +1,7 @@
+// Date: 02/29/24 */
+// Citation for the following function: nodejs starter app */
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/
+
 // Get the objects we need to modify
 let addOrderDetailsForm = document.getElementById('add-orderdetails-form-ajax');
 

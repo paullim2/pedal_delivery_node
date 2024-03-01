@@ -1,7 +1,11 @@
+// Date: 02/29/24 */
+// Citation for the following function: nodejs starter app */
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/
+
 function deleteOrderDetails(orderDetailsID) {
     let link = '/delete-orderdetails-ajax/';
     let data = {
-        orderdetails_id: orderDetailsID
+      orderdetails_id: orderDetailsID
     };
   
     $.ajax({
