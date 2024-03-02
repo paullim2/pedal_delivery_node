@@ -101,14 +101,14 @@ addRowToTable = (data) => {
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    orderDetailsIDCell.innerText = newRow.orderdetails_id;
-    orderIDCell.innerText = newRow.order_id;
-    foodIDCell.innerText = newRow.food_id;
-    orderQtyCell.innerText = newRow.order_qty;
-    unitPriceCell.innerText = newRow.unit_price;
-    lineTotalCell.innerText = newRow.line_total;
-    unitCourierFee.innerText = newRow.unit_courier_fee;
-    lineFeeTotalCell.innerText = newRow.line_fee_total;
+    orderDetailsIDCell.innerText = newRow['Order Details ID'];
+    orderIDCell.innerText = newRow['Order ID'];
+    foodIDCell.innerText = newRow['Food ID'];
+    orderQtyCell.innerText = newRow['Order Qty'];
+    unitPriceCell.innerText = newRow['Unit Price'];
+    lineTotalCell.innerText = newRow['Line Total'];
+    unitCourierFee.innerText = newRow['Unit Courier Fee'];
+    lineFeeTotalCell.innerText = newRow['Line Fee Total'];
 
     deleteCell = document.createElement("button");
     deleteCell.innerHTML = "Delete";

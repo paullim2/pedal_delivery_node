@@ -21,18 +21,99 @@ const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
-
+app.set('views', './views');
 
 /*
     ROUTES
 */
+
+app.get('/', function(req, res)
+    {  
+        let query1 = "SELECT * FROM bsg_people;";               // Define our query
+
+        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
+        })                                                      // an object where 'data' is equal to the 'rows' we
+    });                                                         // received back from the query
+
+
+
+app.get('/customers', function(req, res)
+    {  
+        let getCustomers = "SELECT customer_id as 'Customer ID', first_name as 'First Name', last_name as 'Last Name', \
+        user_id as 'User ID', email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
+        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Customers;";          
+
+        db.pool.query(getCustomers, function(error, rows, fields){   
+
+            res.render('customers', {data: rows});                  
+        })                                                      
+    });                                                        
+
+
+
+app.get('/couriers', function(req, res)
+    {  
+        let getCouriers = "SELECT courier_id as 'Courier ID', first_name as 'First Name', last_name as 'Last Name', \
+        email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
+        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Couriers;";          
+
+        db.pool.query(getCouriers, function(error, rows, fields){   
+
+            res.render('couriers', {data: rows});                  
+        })                                                      
+    });      
+
+      
+app.get('/restaurants', function(req, res)
+    {  
+        let getRestaurants = "SELECT restaurant_id as 'Restaurant ID', name as 'Name', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
+        state as 'State', zipcode as 'Zip Code', phone as 'Phone', cuisine as 'Cuisine' FROM Restaurants;";          
+
+        db.pool.query(getRestaurants, function(error, rows, fields){   
+
+            res.render('restaurants', {data: rows});                  
+        })                                                      
+    });      
+                                                         
+
+
+app.get('/orders', function(req, res)
+    {  
+        let getOrders = "SELECT order_id as 'Order ID', customer_id as 'Customer ID', restaurant_id as'Restaurant ID', courier_id as 'Courier ID', order_date as 'Order Date',\
+        total_amount as 'Total Amount', courier_fee as 'Courier Fee', delivery_status as 'Delivery Status' FROM Orders;";          
+
+        db.pool.query(getOrders, function(error, rows, fields){   
+
+            res.render('orders', {data: rows});                  
+        })                                                      
+    });      
+  
+    
+
+
+app.get('/foods', function(req, res)
+    {  
+        let getFoods = "SELECT food_id as 'Food ID', restaurant_id as 'Restaurant ID', food_name as 'Food Name', cost as 'Cost' FROM Foods;";              
+
+        db.pool.query(getFoods, function(error, rows, fields){   
+
+            res.render('foods', {data: rows});                  
+        })                                                      
+    });       
+       
+
+
 app.get('/', function(req, res)
     {  
         // Declare Query 1
-        let query1 = "SELECT * FROM OrderDetails;";
+        let query1 = "SELECT orderdetails_id as 'Order Details ID', order_id as 'Order ID', food_id as 'Food ID',\
+        order_qty as 'Order Qty', unit_price as 'Unit Price', line_total as 'Line Total', unit_courier_fee as 'Unit Courier Fee',\
+        line_fee_total as 'Line Fee Total' FROM OrderDetails;";
 
         // Query 2 is the same in both cases
-        let query2 = "SELECT * FROM Foods;";
+        let query2 = "SELECT food_id as 'Food ID', restaurant_id as 'Restaurant ID', food_name as 'Food Name', cost as 'Cost' FROM Foods;";   
 
         // Run the 1st query
         db.pool.query(query1, function(error, rows, fields){
@@ -133,7 +214,9 @@ app.post('/add-orderdetails-ajax', function(req, res)
         else
         {
             // If there was no error, perform a SELECT * on bsg_people
-            query2 = `SELECT * FROM OrderDetails;`;
+            query2 = `SELECT orderdetails_id as 'Order Details ID', order_id as 'Order ID', food_id as 'Food ID',\
+            order_qty as 'Order Qty', unit_price as 'Unit Price', line_total as 'Line Total', unit_courier_fee as 'Unit Courier Fee',\
+            line_fee_total as 'Line Fee Total' FROM OrderDetails ;`;
             db.pool.query(query2, function(error, rows, fields){
 
                 // If there was an error on the second query, send a 400
@@ -153,6 +236,9 @@ app.post('/add-orderdetails-ajax', function(req, res)
     })
 });
 
+
+/* DELETE ROUTES*/
+
 app.delete('/delete-orderdetails-ajax/', function(req,res,next){
     let data = req.body;
     let orderDetailsID = parseInt(data.orderdetails_id);
@@ -170,6 +256,8 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
 
   })});
 
+  /*UPDATE ROUTES*/
+
   app.put('/put-orderdetails-ajax', function(req,res,next){
     let data = req.body;
   
@@ -180,7 +268,7 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
     let selectFood = `SELECT * FROM orderdetailsID WHERE orderdetails_ID = ?`
   
           // Run the 1st query
-          db.pool.query(queryUpdateFood, [foodID, orderDetailsID], function(error, rows, fields){
+          db.pool.query(queryUpdateFood, [foodID, orderdetailsID], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.

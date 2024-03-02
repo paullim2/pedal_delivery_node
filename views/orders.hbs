@@ -1,0 +1,47 @@
+<!--
+Names: Paul Lim, Sonja Hanemann
+Group: 108
+Project Title: Pedal Box Delivery
+Class: CS340 400 Introduction to Databases
+Description: Project Step 4 Draft Version: Implement CRUD for One Entity
+-->
+
+
+
+{{!-- Create a table --}}
+
+<h2>Overview of Orders</h2>
+<table border="1" cellpadding="5">
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.[Order ID]}}</td>
+            <td>{{this.[Customer ID]}}</td>
+            <td>{{this.[Restaurant ID]}}</td>
+            <td>{{this.[Courier ID]}}</td>
+            <td>{{this.[Order Date]}}</td>    
+            <td>{{this.[Total Amount]}}</td>
+            <td>{{this.[Courier Fee]}}</td>
+            <td>{{this.[Delivery Status]}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

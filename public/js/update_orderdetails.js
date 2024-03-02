@@ -33,6 +33,11 @@ updateOrderDetailsForm.addEventListener("submit", function (e) {
         return;
     }
 
+    if (isNaN(orderIDValue)) 
+    {
+        return;
+    }
+
 
     // Put our data we want to send in a javascript object
     let data = {
