@@ -105,7 +105,7 @@ app.get('/foods', function(req, res)
        
 
 
-app.get('/', function(req, res)
+app.get('/orderdetails', function(req, res)
     {  
         // Declare Query 1
         let query1 = "SELECT orderdetails_id as 'Order Details ID', order_id as 'Order ID', food_id as 'Food ID',\
