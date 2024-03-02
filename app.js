@@ -146,7 +146,7 @@ app.get('/orderdetails', function(req, res)
 
                 // END OF NEW CODE
 
-                return res.render('index', {data: orderdetails, foods: foods});
+                return res.render('orderdetails', {data: orderdetails, foods: foods});
             })
         });                                           // will process this file, before sending the finished HTML to the client.
     });  
