@@ -49,9 +49,7 @@ app.get('/', function(req, res)
 
 app.get('/customers', function(req, res)
     {  
-        let getCustomers = "SELECT customer_id as 'Customer ID', first_name as 'First Name', last_name as 'Last Name', \
-        user_id as 'User ID', email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Customers;";          
+        let getCustomers = "SELECT * FROM Customers;";          
 
         db.pool.query(getCustomers, function(error, rows, fields){   
 
@@ -64,9 +62,7 @@ app.get('/customers', function(req, res)
 
 app.get('/couriers', function(req, res)
     {  
-        let getCouriers = "SELECT courier_id as 'Courier ID', first_name as 'First Name', last_name as 'Last Name', \
-        email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Couriers;";          
+        let getCouriers = "SELECT * FROM Couriers;";          
 
         db.pool.query(getCouriers, function(error, rows, fields){   
 
@@ -76,8 +72,7 @@ app.get('/couriers', function(req, res)
 
 app.get('/restaurants', function(req, res)
     {  
-        let getRestaurants = "SELECT restaurant_id as 'Restaurant ID', name as 'Name', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone', cuisine as 'Cuisine' FROM Restaurants;";          
+        let getRestaurants = "SELECT * FROM Restaurants;";          
 
         db.pool.query(getRestaurants, function(error, rows, fields){   
 
