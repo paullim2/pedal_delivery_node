@@ -19,6 +19,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
                 {{@key}}
             </th>
             {{/each}}
+            <th>delete</th>
         </tr>
     </thead>
 
@@ -30,16 +31,98 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.[Restaurant ID]}}</td>
-            <td>{{this.[Name]}}</td>
-            <td>{{this.[Street 1]}}</td>
-            <td>{{this.[Street 2]}}</td>
-            <td>{{this.[City]}}</td>
-            <td>{{this.[State]}}</td>
-            <td>{{this.[Zip Code]}}</td>
-            <td>{{this.[Phone]}}</td>
-            <td>{{this.[Cuisine]}}</td>
+            <td>{{this.restaurant_id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.street_1}}</td>
+            <td>{{this.street_2}}</td>
+            <td>{{this.city}}</td>
+            <td>{{this.state}}</td>
+            <td>{{this.zip_code}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.cuisine}}</td>
+            <td><button onclick="deleteRestaurants({{this.restaurant_id}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+
+<h2>Add Restaurants</h2>
+
+<form id="add-restaurants-form-ajax">
+    
+    <label for="input-name">Name: </label>
+    <select type="text" name="input-name" id="input-name">
+
+    <label for="input-street_1">Street 1: </label>
+    <select type="text" name="input-street_1" id="input-street_1">
+    
+    <label for="input-street_2">Street 2: </label>
+    <select type="text" name="input-street_2" id="input-street_2">
+
+    <label for="input-city">City: </label>
+    <input type="text" name="input-city" id="input-city">
+
+    <label for="input-state">State: </label>
+    <input type="text" name="input-state" id="input-state">
+
+    <label for="input-zip_code">Zip Code: </label>
+    <input type="number" name="input-zip_code" id="input-zip_code">
+
+    <label for="input-phone">Phone: </label>
+    <input type="number" name="input-phone" id="input-phone">
+
+    <label for="input-cuisine">Cuisine: </label>
+    <input type="text" name="input-cuisine" id="input-cuisine">
+    
+     <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_restaurants.js"></script>
+
+
+<h2>Update Restaurants</h2>
+<form id="update-restaurants-form-ajax">
+
+    <label for="input-restaurant_id">Restaurant ID: </label>
+    <select type="number" name="input-restaurant_id" id="input-restaurant_id">
+           <option value="">Select Restaurant ID</option>
+        {{#each data}}
+        <option value="{{this.restaurant_id}}">{{this.restaurant_id}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-name">Name: </label>
+    <select type="text" name="input-name" id="input-name">
+           <option value="">Select a Name</option>
+        {{#each data}}
+        <option value="{{this.name}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-street_1">Street 1: </label>
+    <select type="text" name="input-street_1" id="input-street_1">
+
+    <label for="input-street_2">Street 2: </label>
+    <select type="text" name="input-street_2" id="input-street_2">
+
+    <label for="input-city">City: </label>
+    <input type="text" name="input-city" id="input-city">
+
+    <label for="input-state">State: </label>
+    <input type="text" name="input-state" id="input-state">
+
+    <label for="input-zip_code">Zip Code: </label>
+    <input type="number" name="input-zip_code" id="input-zip_code">
+
+    <label for="input-phone">Phone: </label>
+    <input type="number" name="input-phone" id="input-phone">
+
+    <label for="input-cuisine">Cuisine: </label>
+    <input type="text" name="input-cuisine" id="input-cuisine">
+    
+     <input type="submit">
+</form>
+
+<script src="./js/update_restaurants.js"></script>

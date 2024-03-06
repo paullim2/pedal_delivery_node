@@ -23,6 +23,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
                 {{@key}}
             </th>
             {{/each}}
+            <th>delete</th>
         </tr>
     </thead>
 
@@ -33,15 +34,116 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
         <tr>
-            <td>{{this.[Order ID]}}</td>
-            <td>{{this.[Customer ID]}}</td>
-            <td>{{this.[Restaurant ID]}}</td>
-            <td>{{this.[Courier ID]}}</td>
-            <td>{{this.[Order Date]}}</td>    
-            <td>{{this.[Total Amount]}}</td>
-            <td>{{this.[Courier Fee]}}</td>
-            <td>{{this.[Delivery Status]}}</td>
+            <td>{{this.order_id}}</td>
+            <td>{{this.customer_id}}</td>
+            <td>{{this.restaurant_id}}</td>
+            <td>{{this.courier_id}}</td>
+            <td>{{this.order_date}}</td>    
+            <td>{{this.total_amount}}</td>
+            <td>{{this.courier_fee}}</td>
+            <td>{{this.delivery_status}}</td>
+            <td><button onclick="deleteOrders({{this.order_id}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+
+<h2>Add Order</h2>
+
+<form id="add-orders-form-ajax">
+    
+    <label for="input-customer_id">Customer: </label>
+    <select name="input-customer_id" id="customer_id">
+           <option value="">Select a customer</option>
+        {{#each data}}
+        <option value="{{this.customer_id}}">{{this.customer_id}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-restaurant_id">Restaurant: </label>
+    <select name="input-restauarnt_id" id="restaurant_id">
+           <option value="">Select a restaurant</option>
+        {{#each data}}
+        <option value="{{this.restaurant_id}}">{{this.restaurant_id}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-courier_id">Courier: </label>
+    <select name="input-couirer_id" id="courier_id">
+           <option value="">Select a courier</option>
+        {{#each data}}
+        <option value="{{this.courier_id}}">{{this.courier_id}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-order_date">Order Date: </label>
+    <input type="number" name="input-order_date" id="input-order_date">
+
+    <label for="input-total_amount">Total Amount: </label>
+    <input type="number" name="input-total_amount" id="input-total_amount">
+
+    <label for="input-courier_fee">Courier Fee: </label>
+    <input type="number" name="input-courier_fee" id="input-courier_fee">
+
+    <label for="input-delivery_status">Delivery Status: </label>
+    <input type="number" name="input-delivery_status" id="input-delivery_status">
+    
+     <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_orders.js"></script>
+
+
+<h2>Update Order</h2>
+<form id="update-orders-form-ajax">
+
+    <label for="input-order_id">Order ID: </label>
+    <select type="number" name="input-order_id" id="input-order_id">
+           <option value="">Select an Order</option>
+        {{#each data}}
+        <option value="{{this.order_id}}">{{this.order_id}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-customer_id">Customer: </label>
+    <select name="input-customer_id" id="customer_id">
+           <option value="">Select a customer</option>
+        {{#each data}}
+        <option value="{{this.customer_id}}">{{this.customer_id}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-restaurant_id">Restaurant: </label>
+    <select name="input-restauarnt_id" id="restaurant_id">
+           <option value="">Select a restaurant</option>
+        {{#each data}}
+        <option value="{{this.restaurant_id}}">{{this.restaurant_id}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-courier_id">Courier: </label>
+    <select name="input-couirer_id" id="courier_id">
+           <option value="">Select a courier</option>
+        {{#each data}}
+        <option value="{{this.courier_id}}">{{this.courier_id}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-order_date">Order Date: </label>
+    <input type="number" name="input-order_date" id="input-order_date">
+
+    <label for="input-total_amount">Total Amount: </label>
+    <input type="number" name="input-total_amount" id="input-total_amount">
+
+    <label for="input-courier_fee">Courier Fee: </label>
+    <input type="number" name="input-courier_fee" id="input-courier_fee">
+
+    <label for="input-delivery_status">Delivery Status: </label>
+    <input type="number" name="input-delivery_status" id="input-delivery_status">
+    
+     <input type="submit">
+</form>
+
+<script src="./js/update_orders.js"></script>

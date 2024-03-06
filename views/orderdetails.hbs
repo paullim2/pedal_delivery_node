@@ -1,11 +1,13 @@
 
+<!-- index.hbs -->
 <h1>Pedal Box Delivery</h1>
 <p>This page represents the OrderDetails intersection table.</p>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 
 {{!-- Create a table --}}
-<table id="orderdetails-table">>
+<table id="orderdetails-table">
 <table border="1" cellpadding="5">
+
     {{!-- Header section --}}
     <thead>
 
@@ -26,15 +28,15 @@
 
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-            <td>{{this.[Order Details ID]}}</td>
-            <td>{{this.[Order ID]}}</td>
-            <td>{{this.[Food ID]}}</td>
-            <td>{{this.[Order Qty]}}</td>
-            <td>{{this.[Unit Price]}}</td>
-            <td>{{this.[Line Total]}}</td>
-            <td>{{this.[Unit Courier Fee]}}</td>
-            <td>{{this.[Line Fee Total]}}</td>
-            <td><button onclick="deleteOrderDetails({{this.[Order Details ID]}})">Delete</button></td>
+            <td>{{this.orderdetails_id}}</td>
+            <td>{{this.order_id}}</td>
+            <td>{{this.food_id}}</td>
+            <td>{{this.order_qty}}</td>
+            <td>{{this.unit_price}}</td>
+            <td>{{this.line_total}}</td>
+            <td>{{this.unit_courier_fee}}</td>
+            <td>{{this.line_fee_total}}</td>
+            <td><button onclick="deleteOrderDetails({{this.orderdetails_id}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -47,7 +49,12 @@
 <h2>Add Order Details</h2>
 <form id="add-orderdetails-form-ajax">
     <label for="input-order_id">Order ID: </label>
-    <input type="number" name="input-order_id" id="input-order_id">
+    <select type="number" name="input-order_id" id="input-order_id">
+           <option value="">Select an Order</option>
+        {{#each data}}
+        <option value="{{this.order_id}}">{{this.order_id}}</option>
+        {{/each}}
+    </select>
 
     {{!<label for="input-food_id">Food ID: </label>
     <input type="number" name="input-food_id" id="input-food_id">}}
@@ -56,7 +63,7 @@
     <select name="input-food_id" id="input-food_id">
         <option value="">Select Food</option>
         {{#each foods}}
-        <option value="{{this.[Food ID]}}">{{this.[Food Name]}}</option>
+        <option value="{{this.food_id}}">{{this.food_name}}</option>
         {{/each}}
     </select>
 
@@ -88,18 +95,34 @@
     <select name="input-orderDetails_id" id="mySelect">
         <option value="test">Select an Order Detail</option>
         {{#each data}}
-        <option value="{{this.[Order ID]}}">{{this.[Order ID]}}</option>
+        <option value="{{this.orderdetails_id}}">{{this.orderdetails_id}}</option>
         {{/each}}
     </select>
-
 
     <label for="input-food_id">Food:</label>
     <select name="input-food_id" id="input-food_id">
         <option value="">Select Food</option>
         {{#each foods}}
-        <option value="{{[Food ID]}}">{{this.[Food Name]}}</option>
+        <option value="{{this.food_id}}">{{this.food_name}}</option>
         {{/each}}
     </select>
+
+    <label for="input-order_qty">Order Qty: </label>
+    <input type="number" name="input-order_qty" id="input-order_qty">
+    
+    <label for="input-unit_price">Unit Price: </label>
+    <input type="number" name="input-unit_price" id="input-unit_price">
+    
+
+    <label for="input-line_total">Line Total: </label>
+    <input type="number" name="input-line_total" id="input-line_total">
+
+    <label for="input-unit_courier_fee">Unit Courier Fee: </label>
+    <input type="number" name="input-unit_courier_fee" id="input-unit_courier_fee">
+
+    <label for="input-line_fee_total">Line Fee Total: </label>
+    <input type="number" name="input-line_fee_total" id="input-line_fee_total">
+
     <input type="submit">
 </form>
 

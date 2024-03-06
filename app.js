@@ -2,7 +2,6 @@
 /* Citation for the following function: nodejs starter app */
 /* Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/ */
 
-// App.js
 
 /*
     SETUP
@@ -14,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT        = 60028;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 64344;                 // Set a port number at the top so it's easy to change in the future
 var db      = require('./database/db-connector')
 
 const { engine } = require('express-handlebars');
@@ -25,6 +24,80 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 /*
     ROUTES
 */
+
+/*
+    GET ROUTES
+*/
+
+
+app.get('/', function(req, res)
+    {  
+        let query1 = "SELECT * FROM bsg_people;";               // Define our query
+
+        db.pool.query(query1, function(error, rows, fields){    // Execute the query
+
+            res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
+        })                                                      // an object where 'data' is equal to the 'rows' we
+    });                                                         // received back from the query
+
+
+app.get('/customers', function(req, res)
+    {  
+        let getCustomers = "SELECT * FROM Customers;";          
+
+        db.pool.query(getCustomers, function(error, rows, fields){   
+
+            res.render('customers', {data: rows});                  
+        })                                                      
+    });                                                        
+
+
+    
+
+app.get('/couriers', function(req, res)
+    {  
+        let getCouriers = "SELECT * FROM Couriers;";          
+
+        db.pool.query(getCouriers, function(error, rows, fields){   
+
+            res.render('couriers', {data: rows});                  
+        })                                                      
+    });      
+
+app.get('/restaurants', function(req, res)
+    {  
+        let getRestaurants = "SELECT * FROM Restaurants;";          
+
+        db.pool.query(getRestaurants, function(error, rows, fields){   
+
+            res.render('restaurants', {data: rows});                  
+        })                                                      
+    });      
+
+
+app.get('/orders', function(req, res)
+    {  
+        let getOrders = "SELECT * FROM Orders;";          
+
+        db.pool.query(getOrders, function(error, rows, fields){   
+
+            res.render('orders', {data: rows});                  
+        })                                                      
+    });      
+  
+
+app.get('/foods', function(req, res)
+    {  
+        let getFoods = "SELECT * FROM Foods;";              
+
+        db.pool.query(getFoods, function(error, rows, fields){   
+
+            res.render('foods', {data: rows});                  
+        })                                                      
+    });    
+
+
+
 app.get('/orderdetails', function(req, res)
     {  
         // Declare Query 1
@@ -69,6 +142,12 @@ app.get('/orderdetails', function(req, res)
         });                                           // will process this file, before sending the finished HTML to the client.
     });  
 
+
+
+/*
+    UPDATE ROUTES
+*/
+    
 app.post('/add-orderdetails-ajax', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -151,6 +230,10 @@ app.post('/add-orderdetails-ajax', function(req, res)
     })
 });
 
+
+/*
+    DELETE ROUTES
+*/
 app.delete('/delete-orderdetails-ajax/', function(req,res,next){
     let data = req.body;
     let orderDetailsID = parseInt(data.orderdetails_id);
