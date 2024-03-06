@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT        = 60028;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 60029;                 // Set a port number at the top so it's easy to change in the future
 var db      = require('./database/db-connector')
 
 const { engine } = require('express-handlebars');
@@ -43,7 +43,7 @@ app.get('/customers', function(req, res)
     {  
         let getCustomers = "SELECT customer_id as 'Customer ID', first_name as 'First Name', last_name as 'Last Name', \
         user_id as 'User ID', email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Customers;";          
+        state as 'State', zip_code as 'Zip Code', phone as 'Phone' FROM Customers;";          
 
         db.pool.query(getCustomers, function(error, rows, fields){   
 
@@ -57,7 +57,7 @@ app.get('/couriers', function(req, res)
     {  
         let getCouriers = "SELECT courier_id as 'Courier ID', first_name as 'First Name', last_name as 'Last Name', \
         email as 'Email', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone' FROM Couriers;";          
+        state as 'State', zip_code as 'Zip Code', phone as 'Phone' FROM Couriers;";          
 
         db.pool.query(getCouriers, function(error, rows, fields){   
 
@@ -69,7 +69,7 @@ app.get('/couriers', function(req, res)
 app.get('/restaurants', function(req, res)
     {  
         let getRestaurants = "SELECT restaurant_id as 'Restaurant ID', name as 'Name', street_1 as 'Street 1', street_2 as 'Street 2', city as 'City',\
-        state as 'State', zipcode as 'Zip Code', phone as 'Phone', cuisine as 'Cuisine' FROM Restaurants;";          
+        state as 'State', zip_code as 'Zip Code', phone as 'Phone', cuisine as 'Cuisine' FROM Restaurants;";          
 
         db.pool.query(getRestaurants, function(error, rows, fields){   
 
