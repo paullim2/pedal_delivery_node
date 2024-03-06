@@ -95,25 +95,25 @@ addRowToTable = (data) => {
     let orderQtyCell = document.createElement("TD");
     let unitPriceCell = document.createElement("TD");
     let lineTotalCell = document.createElement("TD");
-    let unitCourierFee = document.createElement("TD");
+    let unitCourierFeeCell = document.createElement("TD");
     let lineFeeTotalCell = document.createElement("TD");
 
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data
-    orderDetailsIDCell.innerText = newRow['Order Details ID'];
-    orderIDCell.innerText = newRow['Order ID'];
-    foodIDCell.innerText = newRow['Food ID'];
-    orderQtyCell.innerText = newRow['Order Qty'];
-    unitPriceCell.innerText = newRow['Unit Price'];
-    lineTotalCell.innerText = newRow['Line Total'];
-    unitCourierFee.innerText = newRow['Unit Courier Fee'];
-    lineFeeTotalCell.innerText = newRow['Line Fee Total'];
+    orderDetailsIDCell.innerText = newRow.orderdetails_id;
+    orderIDCell.innerText = newRow.order_id;
+    foodIDCell.innerText = newRow.food_id;
+    orderQtyCell.innerText = newRow.order_qty;
+    unitPriceCell.innerText = newRow.unit_price;
+    lineTotalCell.innerText = newRow.line_total;
+    unitCourierFeeCell.innerText = newRow.unit_courier_fee;
+    lineFeeTotalCell.innerText = newRow.line_fee_total;
 
     deleteCell = document.createElement("button");
     deleteCell.innerHTML = "Delete";
     deleteCell.onclick = function(){
-        deletePerson(newRow.id);
+        deletePerson(newRow.orderdetails_id);
     };
 
 
@@ -124,12 +124,12 @@ addRowToTable = (data) => {
     row.appendChild(orderQtyCell);
     row.appendChild(unitPriceCell);
     row.appendChild(lineTotalCell);
-    row.appendChild(unitCourierFee);
+    row.appendChild(unitCourierFeeCell);
     row.appendChild(lineFeeTotalCell);
     row.appendChild(deleteCell);
 
     // Add a row attribute so the deleteRow function can find a newly added row
-    row.setAttribute('data-value', newRow.id);
+    row.setAttribute('data-value', newRow.orderdetails_id);
 
     
     // Add the row to the table
