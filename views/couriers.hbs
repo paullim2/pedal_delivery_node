@@ -52,19 +52,19 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 <form id="add-couriers-form-ajax">
     
     <label for="input-first_name">First Name: </label>
-    <select type="text" name="input-first_name" id="input-first_name">
+    <input type="text" name="input-first_name" id="input-first_name">
 
     <label for="input-last_name">Last Name: </label>
-    <select type="text" name="input-last_name" id="input-last_name">
+    <input type="text" name="input-last_name" id="input-last_name">
 
     <label for="input-email">Email: </label>
-    <select type="text" name="input-email" id="input-email">
+    <input type="text" name="input-email" id="input-email">
 
     <label for="input-street_1">Street 1: </label>
-    <select type="text" name="input-street_1" id="input-street_1">
+    <input type="text" name="input-street_1" id="input-street_1">
     
     <label for="input-street_2">Street 2: </label>
-    <select type="text" name="input-street_2" id="input-street_2">
+    <input type="text" name="input-street_2" id="input-street_2">
 
     <label for="input-city">City: </label>
     <input type="text" name="input-city" id="input-city">
@@ -76,7 +76,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
     <input type="number" name="input-zip_code" id="input-zip_code">
 
     <label for="input-phone">Phone: </label>
-    <input type="number" name="input-phone" id="input-phone">
+    <input type="text" name="input-phone" id="input-phone">
 
     
     <input type="submit">
@@ -84,47 +84,3 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_couriers.js"></script>
-
-
-<h2>Update Couriers</h2>
-<form id="update-couriers-form-ajax">
-
-    <label for="input-courier_id">Courier ID: </label>
-    <select type="number" name="input-courier_id" id="input-courier_id">
-           <option value="">Select Courier ID</option>
-        {{#each data}}
-        <option value="{{this.courier_id}}">{{this.courier_id}}</option>
-        {{/each}}
-    </select>
-    
-    <label for="input-first_name">First Name: </label>
-    <select type="text" name="input-first_name" id="input-first_name">
-
-    <label for="input-last_name">Last Name: </label>
-    <select type="text" name="input-last_name" id="input-last_name">
-
-    <label for="input-email">Email: </label>
-    <select type="text" name="input-email" id="input-email">
-
-    <label for="input-street_1">Street 1: </label>
-    <select type="text" name="input-street_1" id="input-street_1">
-    
-    <label for="input-street_2">Street 2: </label>
-    <select type="text" name="input-street_2" id="input-street_2">
-
-    <label for="input-city">City: </label>
-    <input type="text" name="input-city" id="input-city">
-
-    <label for="input-state">State: </label>
-    <input type="text" name="input-state" id="input-state">
-
-    <label for="input-zip_code">Zip Code: </label>
-    <input type="number" name="input-zip_code" id="input-zip_code">
-
-    <label for="input-phone">Phone: </label>
-    <input type="number" name="input-phone" id="input-phone">
-
-    <input type="submit">
-</form>
-
-<script src="./js/update_couriers.js"></script>

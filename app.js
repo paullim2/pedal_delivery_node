@@ -17,8 +17,10 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
 
-PORT        = 60029;                 // Set a port number at the top so it's easy to change in the future
-var db      = require('./database/db-connector')
+PORT        = 60028;                 // Set a port number at the top so it's easy to change in the future
+
+// Database
+var db = require('./database/db-connector')
 
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
@@ -82,25 +84,150 @@ app.get('/restaurants', function(req, res)
 
 
 app.get('/orders', function(req, res)
-    {  
-        let getOrders = "SELECT * FROM Orders;";          
+{  
 
-        db.pool.query(getOrders, function(error, rows, fields){   
+    // Declare Query 1
+    let query1 = "SELECT * FROM Orders;";
 
-            res.render('orders', {data: rows});                  
-        })                                                      
-    });      
+    // Query 2 is the same in both cases
+    let query2 = "SELECT * FROM Customers;";
+
+    // Query 2 is the same in both cases
+    let query3 = "SELECT * FROM Restaurants;";
+
+    // Query 2 is the same in both cases
+    let query4 = "SELECT * FROM Couriers;";
+
+    // Run the 1st query
+    db.pool.query(query1, function(error, rows, fields){
+        
+        // Save the foods
+        let orders = rows;
+        
+        // Run the second query
+        db.pool.query(query2, (error, rows, fields) => {
+            
+            // Save the foods
+            let customers = rows;
+
+            // BEGINNING OF NEW CODE
+
+            // Construct an object for reference in the table
+            // Array.map is awesome for doing something with each
+            // element of an array.
+            let customermap = {}
+            customers.map(customer => {
+                let customer_id = parseInt(customer.customer_id, 10);
+
+                customermap[customer_id] = customer["user_id"];
+            })
+
+            // Overwrite the homeworld ID with the name of the planet in the people object
+            orders = orders.map(order => {
+                return Object.assign(order, {customer_id: customermap[order.customer_id]})
+            })
+
+            // Run the third query
+            db.pool.query(query3, (error, rows, fields) => {
+                
+                // Save the foods
+                let restaurants = rows;
+
+                // BEGINNING OF NEW CODE
+
+                // Construct an object for reference in the table
+                // Array.map is awesome for doing something with each
+                // element of an array.
+                let restaurantmap = {}
+                restaurants.map(restaurant => {
+                    let restaurant_id = parseInt(restaurant.restaurant_id, 10);
+
+                    restaurantmap[restaurant_id] = restaurant["name"];
+                })
+
+                // Overwrite the homeworld ID with the name of the planet in the people object
+                orders = orders.map(order => {
+                    return Object.assign(order, {restaurant_id: restaurantmap[order.restaurant_id]})
+                })
+            
+                db.pool.query(query4, (error, rows, fields) => {
+                    
+                    // Save the foods
+                    let couriers = rows;
+
+                    // BEGINNING OF NEW CODE
+
+                    // Construct an object for reference in the table
+                    // Array.map is awesome for doing something with each
+                    // element of an array.
+                    let couriermap = {}
+                    couriers.map(courier => {
+                        let courier_id = parseInt(courier.courier_id, 10);
+
+                        couriermap[courier_id] = courier["email"];
+                    })
+
+                    // Overwrite the homeworld ID with the name of the planet in the people object
+                    orders = orders.map(order => {
+                        return Object.assign(order, {courier_id: couriermap[order.courier_id]})
+                    })
+
+                    // END OF NEW CODE
+
+                    return res.render('orders', {data: orders, customers: customers, restaurants: restaurants, couriers: couriers});
+                }) 
+            })
+        })
+    })                                           // will process this file, before sending the finished HTML to the client.
+});  
+
+
   
 
 app.get('/foods', function(req, res)
     {  
-        let getFoods = "SELECT * FROM Foods;";              
 
-        db.pool.query(getFoods, function(error, rows, fields){   
+        // Declare Query 1
+        let query1 = "SELECT * FROM Foods;";
 
-            res.render('foods', {data: rows});                  
-        })                                                      
-    });    
+        // Query 2 is the same in both cases
+        let query2 = "SELECT * FROM Restaurants;";
+
+        // Run the 1st query
+        db.pool.query(query1, function(error, rows, fields){
+            
+            // Save the foods
+            let foods = rows;
+            
+            // Run the second query
+            db.pool.query(query2, (error, rows, fields) => {
+                
+                // Save the foods
+                let restaurants = rows;
+
+                // BEGINNING OF NEW CODE
+
+                // Construct an object for reference in the table
+                // Array.map is awesome for doing something with each
+                // element of an array.
+                let restaurantmap = {}
+                restaurants.map(restaurant => {
+                    let restaurant_id = parseInt(restaurant.restaurant_id, 10);
+
+                    restaurantmap[restaurant_id] = restaurant["name"];
+                })
+
+                // Overwrite the homeworld ID with the name of the planet in the people object
+                foods = foods.map(food => {
+                    return Object.assign(food, {restaurant_id: restaurantmap[food.restaurant_id]})
+                })
+
+                // END OF NEW CODE
+
+                return res.render('foods', {data: foods, restaurants: restaurants});
+            })
+        });                                           // will process this file, before sending the finished HTML to the client.
+    });  
 
 
 
@@ -151,7 +278,7 @@ app.get('/orderdetails', function(req, res)
 
 
 /*
-    UPDATE ROUTES
+    ADD ROUTES
 */
 
 
@@ -246,6 +373,508 @@ app.post('/add-orderdetails-ajax', function(req, res)
 });
 
 /*
+Customers page
+*/
+app.post('/add-customers-ajax', function(req, res) 
+{
+   // Capture the incoming data and parse it back to a JS object
+   let data = req.body;
+
+   // Capture NULL values
+   let customer_id = parseInt(data.customer_id);
+   if (isNaN(customer_id))
+   {
+    customer_id = 'NULL'
+   }
+
+   let first_name = parseInt(data.first_name);
+   if (isNaN(first_name))
+   {
+    first_name = 'NULL'
+   }
+
+   let last_name = parseInt(data.last_name);
+   if (isNaN(last_name))
+   {
+    last_name = 'NULL'
+   }
+
+   let user_id = parseFloat(data.user_id);
+   if (isNaN(user_id))
+   {
+    user_id = 'NULL'
+   }
+
+   let email = parseFloat(data.email);
+   if (isNaN(email))
+   {
+    email = 'NULL'
+   }
+
+   let street_1 = parseFloat(data.street_1);
+   if (isNaN(street_1))
+   {
+    street_1 = 'NULL'
+   }
+
+   let street_2 = parseFloat(data.street_2);
+   if (isNaN(street_2))
+   {
+    street_2 = 'NULL'
+   }
+
+   let city = parseFloat(data.city);
+   if (isNaN(city))
+   {
+    city = 'NULL'
+   }
+
+   let state = parseFloat(data.state);
+   if (isNaN(state))
+   {
+    state = 'NULL'
+   }
+
+   let zip_code = parseFloat(data.zip_code);
+   if (isNaN(zip_code))
+   {
+    zip_code = 'NULL'
+   }
+
+   let phone = parseFloat(data.phone);
+   if (isNaN(phone))
+   {
+    phone = 'NULL'
+   }
+
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Customers (customer_id, first_name, last_name, user_id, email, street_1, street_2, city, state, zip_code, phone) VALUES ('${data.customer_id}', '${data.first_name}', '${data.last_name}', '${data.user_id}', '${data.email}', '${data.street_1}', '${data.street_2}', '${data.city}', '${data.state}', '${data.zip_code}','${data.phone}'  )`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+       
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Customers;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+
+
+/*
+Foods page
+*/
+app.post('/add-foods-ajax', function(req, res) 
+{
+   // Capture the incoming data and parse it back to a JS object
+   let data = req.body;
+
+   // Capture NULL values
+   let food_id = parseInt(data.food_id);
+   if (isNaN(food_id))
+   {
+    food_id = 'NULL'
+   }
+
+   let restaurant_id = parseInt(data.restaurant_id);
+   if (isNaN(restaurant_id))
+   {
+    restaurant_id = 'NULL'
+   }
+
+   let food_name = parseInt(data.food_name);
+   if (isNaN(food_name))
+   {
+    food_name = 'NULL'
+   }
+
+   let cost = parseFloat(data.cost);
+   if (isNaN(cost))
+   {
+    cost = 'NULL'
+   }
+
+   
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Foods (food_id, restaurant_id, food_name, cost) VALUES ('${data.food_id}', '${data.restaurant_id}', '${data.food_name}', '${data.cost}'  )`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+       
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Foods;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+/*
+Couriers page
+*/
+app.post('/add-couriers-ajax', function(req, res) 
+{
+   // Capture the incoming data and parse it back to a JS object
+   let data = req.body;
+
+   // Capture NULL values
+   let courier_id = parseInt(data.courier_id);
+   if (isNaN(courier_id))
+   {
+    courier_id = 'NULL'
+   }
+
+   let first_name = parseInt(data.first_name);
+   if (isNaN(first_name))
+   {
+    first_name = 'NULL'
+   }
+
+   let last_name = parseInt(data.last_name);
+   if (isNaN(last_name))
+   {
+    last_name = 'NULL'
+   }
+
+   let email = parseFloat(data.email);
+   if (isNaN(email))
+   {
+    email = 'NULL'
+   }
+
+   let street_1 = parseFloat(data.street_1);
+   if (isNaN(street_1))
+   {
+    street_1 = 'NULL'
+   }
+
+   let street_2 = parseFloat(data.street_2);
+   if (isNaN(street_2))
+   {
+    street_2 = 'NULL'
+   }
+
+   let city = parseFloat(data.city);
+   if (isNaN(city))
+   {
+    city = 'NULL'
+   }
+
+   let state = parseFloat(data.state);
+   if (isNaN(state))
+   {
+    state = 'NULL'
+   }
+
+   let zip_code = parseFloat(data.zip_code);
+   if (isNaN(zip_code))
+   {
+    zip_code = 'NULL'
+   }
+
+   let phone = parseFloat(data.phone);
+   if (isNaN(phone))
+   {
+    phone = 'NULL'
+   }
+
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Couriers (courier_id, first_name, last_name, email, street_1, street_2, city, state, zip_code, phone) VALUES ('${data.courier_id}', '${data.first_name}', '${data.last_name}', '${data.email}', '${data.street_1}', '${data.street_2}', '${data.city}', '${data.state}', '${data.zip_code}','${data.phone}'  )`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+       
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Couriers;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+/*
+Restaurants page
+*/
+app.post('/add-restaurants-ajax', function(req, res) 
+{
+   // Capture the incoming data and parse it back to a JS object
+   let data = req.body;
+
+   // Capture NULL values
+   let restaurant_id = parseInt(data.restaurant_id);
+   if (isNaN(restaurant_id))
+   {
+    restaurant_id = 'NULL'
+   }
+
+   let name = parseInt(data.name);
+   if (isNaN(name))
+   {
+    name = 'NULL'
+   }
+
+   let street_1 = parseFloat(data.street_1);
+   if (isNaN(street_1))
+   {
+    street_1 = 'NULL'
+   }
+
+   let street_2 = parseFloat(data.street_2);
+   if (isNaN(street_2))
+   {
+    street_2 = 'NULL'
+   }
+
+   let city = parseFloat(data.city);
+   if (isNaN(city))
+   {
+    city = 'NULL'
+   }
+
+   let state = parseFloat(data.state);
+   if (isNaN(state))
+   {
+    state = 'NULL'
+   }
+
+   let zip_code = parseFloat(data.zip_code);
+   if (isNaN(zip_code))
+   {
+    zip_code = 'NULL'
+   }
+
+   let phone = parseFloat(data.phone);
+   if (isNaN(phone))
+   {
+    phone = 'NULL'
+   }
+
+   let cuisine = parseFloat(data.cuisine);
+   if (isNaN(cuisine))
+   {
+    cuisine = 'NULL'
+   }
+
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Restaurants (restaurant_id, name, street_1, street_2, city, state, zip_code, phone, cuisine) VALUES ('${data.restaurant_id}', '${data.name}', '${data.street_1}', '${data.street_2}', '${data.city}', '${data.state}', '${data.zip_code}','${data.phone}',  '${data.cuisine}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+       
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Restaurants;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+/*
+Orders page
+*/
+app.post('/add-orders-ajax', function(req, res) 
+{
+   // Capture the incoming data and parse it back to a JS object
+   let data = req.body;
+
+   // Capture NULL values
+   let order_id = parseInt(data.order_id);
+   if (isNaN(order_id))
+   {
+    order_id = 'NULL'
+   }
+
+   let customer_id = parseInt(data.customer_id);
+   if (isNaN(customer_id))
+   {
+    customer_id = 'NULL'
+   }
+
+   let restaurant_id = parseFloat(data.restaurant_id);
+   if (isNaN(restaurant_id))
+   {
+    restaurant_id = 'NULL'
+   }
+
+   let courier_id = parseFloat(data.courier_id);
+   if (isNaN(courier_id))
+   {
+    courier_id = 'NULL'
+   }
+
+   let order_date = parseFloat(data.order_date);
+   if (isNaN(order_date))
+   {
+    order_date = 'NULL'
+   }
+
+   let total_amount = parseFloat(data.total_amount);
+   if (isNaN(total_amount))
+   {
+    total_amount = 'NULL'
+   }
+
+   let courier_fee = parseFloat(data.courier_fee);
+   if (isNaN(courier_fee))
+   {
+    courier_fee = 'NULL'
+   }
+
+   let delivery_status = parseFloat(data.delivery_status);
+   if (isNaN(delivery_status))
+   {
+    delivery_status = 'NULL'
+   }
+
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Orders (order_id, customer_id, restaurant_id, courier_id, order_date, total_amount, courier_fee, delivery_status) VALUES ('${data.order_id}', '${data.customer_id}', '${data.restaurant_id}', '${data.courier_id}', '${data.order_date}', '${data.total_amount}', '${data.courier_fee}','${data.delivery_status}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+
+        // If there was no error, we redirect back to our root route, which automatically runs the SELECT * FROM bsg_people and
+        // presents it on the screen
+       
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Orders;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+
+
+
+
+
+
+/*
+/*
     DELETE ROUTES
 */
 
@@ -267,22 +896,52 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
 
 })});
 
+/*
+Customers page
+*/
+
+app.delete('/delete-customers-ajax/', function(req,res,next){
+let data = req.body;
+let customerID = parseInt(data.customer_id);
+let deleteCustomerID = `DELETE FROM Customers WHERE customer_id = ?`;
+
+
+      // Run the 1st query
+      db.pool.query(deleteCustomerID, [customerID], function(error, rows, fields){
+          if (error) {
+
+          // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+          console.log(error);
+          res.sendStatus(400);
+          }
+
+})});
 
 
 
+
+
+/*
+    UPDATE ROUTES
+*/
 
 
   app.put('/put-orderdetails-ajax', function(req,res,next){
     let data = req.body;
   
-    let orderdetailsID = parseInt(data.orderdetails_id);
+    let orderDetailsID = parseInt(data.orderdetails_id);
     let foodID = parseInt(data.food_id);
+    let unitPrice = parseInt(data.unit_price);
+    let lineTotal = parseInt(data.line_total);
+    let unitCourierFee= parseInt(data.unit_courier_fee);
+    let lineFeeTotal= parseInt(data.line_fee_total);
   
     let queryUpdateFood= `UPDATE OrderDetails SET food_id = ? WHERE OrderDetails.orderdetails_id = ?`;
-    let selectFood = `SELECT * FROM orderdetailsID WHERE orderdetails_ID = ?`
+    let selectFood = `SELECT * FROM OrderDetails WHERE orderdetails_ID = ?`
+   
   
           // Run the 1st query
-          db.pool.query(queryUpdateFood, [foodID, orderDetailsID], function(error, rows, fields){
+          db.pool.query(queryUpdateFood, [orderDetailsID, foodID, unitPrice, lineTotal,unitCourierFee,lineFeeTotal ], function(error, rows, fields){
               if (error) {
   
               // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -295,7 +954,7 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
               else
               {
                   // Run the second query
-                  db.pool.query(selectFood, [orderdetailsID], function(error, rows, fields) {
+                  db.pool.query(selectFood, [orderDetailsID, foodID, unitPrice, lineTotal,unitCourierFee, lineFeeTotal ], function(error, rows, fields) {
   
                       if (error) {
                           console.log(error);
@@ -313,5 +972,3 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
 app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
     console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
 });
-
-

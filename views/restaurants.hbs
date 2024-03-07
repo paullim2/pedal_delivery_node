@@ -52,13 +52,13 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 <form id="add-restaurants-form-ajax">
     
     <label for="input-name">Name: </label>
-    <select type="text" name="input-name" id="input-name">
+    <input type="text" name="input-name" id="input-name">
 
     <label for="input-street_1">Street 1: </label>
-    <select type="text" name="input-street_1" id="input-street_1">
+    <input type="text" name="input-street_1" id="input-street_1">
     
     <label for="input-street_2">Street 2: </label>
-    <select type="text" name="input-street_2" id="input-street_2">
+    <input type="text" name="input-street_2" id="input-street_2">
 
     <label for="input-city">City: </label>
     <input type="text" name="input-city" id="input-city">
@@ -70,7 +70,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
     <input type="number" name="input-zip_code" id="input-zip_code">
 
     <label for="input-phone">Phone: </label>
-    <input type="number" name="input-phone" id="input-phone">
+    <input type="text" name="input-phone" id="input-phone">
 
     <label for="input-cuisine">Cuisine: </label>
     <input type="text" name="input-cuisine" id="input-cuisine">
@@ -80,49 +80,3 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_restaurants.js"></script>
-
-
-<h2>Update Restaurants</h2>
-<form id="update-restaurants-form-ajax">
-
-    <label for="input-restaurant_id">Restaurant ID: </label>
-    <select type="number" name="input-restaurant_id" id="input-restaurant_id">
-           <option value="">Select Restaurant ID</option>
-        {{#each data}}
-        <option value="{{this.restaurant_id}}">{{this.restaurant_id}}</option>
-        {{/each}}
-    </select>
-    
-    <label for="input-name">Name: </label>
-    <select type="text" name="input-name" id="input-name">
-           <option value="">Select a Name</option>
-        {{#each data}}
-        <option value="{{this.name}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-    
-    <label for="input-street_1">Street 1: </label>
-    <select type="text" name="input-street_1" id="input-street_1">
-
-    <label for="input-street_2">Street 2: </label>
-    <select type="text" name="input-street_2" id="input-street_2">
-
-    <label for="input-city">City: </label>
-    <input type="text" name="input-city" id="input-city">
-
-    <label for="input-state">State: </label>
-    <input type="text" name="input-state" id="input-state">
-
-    <label for="input-zip_code">Zip Code: </label>
-    <input type="number" name="input-zip_code" id="input-zip_code">
-
-    <label for="input-phone">Phone: </label>
-    <input type="number" name="input-phone" id="input-phone">
-
-    <label for="input-cuisine">Cuisine: </label>
-    <input type="text" name="input-cuisine" id="input-cuisine">
-    
-     <input type="submit">
-</form>
-
-<script src="./js/update_restaurants.js"></script>
