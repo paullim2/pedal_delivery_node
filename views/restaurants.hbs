@@ -7,8 +7,11 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 -->
 
 <h2>Overview of Restaurants</h2>
-        <table border="1" cellpadding="5">
-            {{!-- Header section --}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <table id="restaurants-table" border="1" cellpadding="5">
+    {{!-- Header section --}}
     <thead>
 
         {{!-- For just the first row, we print each key of the row object as a header cell so we
@@ -29,7 +32,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value={{this.restaurant_id}}>
             <td>{{this.restaurant_id}}</td>
             <td>{{this.name}}</td>
             <td>{{this.street_1}}</td>
@@ -42,7 +45,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         </tr>
         {{/each}}
     </tbody>
-</table>
+    </table>
 
 
 <h2>Add Restaurants</h2>

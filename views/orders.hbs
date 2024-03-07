@@ -5,10 +5,11 @@ Project Title: Pedal Box Delivery
 Class: CS340 400 Introduction to Databases
 Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 -->
+
+<h2>Overview of Orders</h2>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-        <h2>Overview of Orders</h2>
-        <table border="1" cellpadding="5">
+    <table id="orders-table" border="1" cellpadding="5">
     {{!-- Header section --}}
     <thead>
 
@@ -29,7 +30,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value={{this.order_id}}>
             <td>{{this.order_id}}</td>
             <td>{{this.customer_id}}</td>
             <td>{{this.restaurant_id}}</td>

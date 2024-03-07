@@ -896,30 +896,6 @@ app.delete('/delete-orderdetails-ajax/', function(req,res,next){
 
 })});
 
-/*
-Customers page
-*/
-
-app.delete('/delete-customers-ajax/', function(req,res,next){
-let data = req.body;
-let customerID = parseInt(data.customer_id);
-let deleteCustomerID = `DELETE FROM Customers WHERE customer_id = ?`;
-
-
-      // Run the 1st query
-      db.pool.query(deleteCustomerID, [customerID], function(error, rows, fields){
-          if (error) {
-
-          // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
-          console.log(error);
-          res.sendStatus(400);
-          }
-
-})});
-
-
-
-
 
 /*
     UPDATE ROUTES

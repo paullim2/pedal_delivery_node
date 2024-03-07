@@ -5,10 +5,15 @@ Project Title: Pedal Box Delivery
 Class: CS340 400 Introduction to Databases
 Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 -->
+
+
+<!-- index.hbs -->
+<h2>Overview of Foods</h2>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-        <h2>Overview of Foods</h2>
-        <table border="1" cellpadding="5">
+    <table id="foods-table" border="1" cellpadding="5">
+    
     {{!-- Header section --}}
     <thead>
 
@@ -29,7 +34,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value={{this.food_id}}>
             <td>{{this.food_id}}</td>
             <td>{{this.restaurant_id}}</td>
             <td>{{this.food_name}}</td>
@@ -38,7 +43,6 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         {{/each}}
     </tbody>
 </table>
-
 <script src="./js/delete_foods.js"></script>
 
 

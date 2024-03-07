@@ -10,7 +10,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-    <table border="1" cellpadding="5">
+    <table id="customers-table" border="1" cellpadding="5">
  
     {{!-- Header section --}}
     <thead>
@@ -33,7 +33,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 
       {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value={{this.customer_id}}>
             <td>{{this.customer_id}}</td>
             <td>{{this.first_name}}</td>
             <td>{{this.last_name}}</td>

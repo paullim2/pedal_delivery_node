@@ -7,8 +7,11 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 -->
 
 <h2>Overview of Couriers</h2>
-        <table border="1" cellpadding="5">
-            {{!-- Header section --}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <table id="couriers-table" border="1" cellpadding="5">
+    {{!-- Header section --}}
     <thead>
 
         {{!-- For just the first row, we print each key of the row object as a header cell so we
@@ -28,7 +31,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         
         {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
         {{#each data}}
-        <tr>
+        <tr data-value={{this.courier_id}}>
             <td>{{this.courier_id}}</td>
             <td>{{this.first_name}}</td>
             <td>{{this.last_name}}</td>
@@ -42,7 +45,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
         </tr>
         {{/each}}
     </tbody>
-</table>
+    </table>
 
 
 <h2>Add Couriers</h2>
@@ -75,8 +78,7 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
 
     <label for="input-phone">Phone: </label>
     <input type="text" name="input-phone" id="input-phone">
-
-    
+ 
     <input type="submit">
 </form>
 
