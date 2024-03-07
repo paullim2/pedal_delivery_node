@@ -19,7 +19,6 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
                 {{@key}}
             </th>
             {{/each}}
-             <th>delete</th>
         </tr>
     </thead>
 
@@ -40,7 +39,6 @@ Description: Project Step 4 Draft Version: Implement CRUD for One Entity
             <td>{{this.state}}</td>
             <td>{{this.zip_code}}</td>
             <td>{{this.phone}}</td>
-            <td><button onclick="deleteCouriers({{this.courier_id}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
