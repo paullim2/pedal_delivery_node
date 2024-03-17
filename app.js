@@ -85,95 +85,97 @@ app.get('/restaurants', function(req, res)
 
 app.get('/orders', function(req, res)
 {  
-
+    
     // Declare Query 1
     let query1 = "SELECT * FROM Orders;";
-
+    
     // Query 2 is the same in both cases
     let query2 = "SELECT * FROM Customers;";
-
+    
     // Query 2 is the same in both cases
     let query3 = "SELECT * FROM Restaurants;";
-
+    
     // Query 2 is the same in both cases
     let query4 = "SELECT * FROM Couriers;";
-
+    
     // Run the 1st query
     db.pool.query(query1, function(error, rows, fields){
-        
+            
         // Save the foods
         let orders = rows;
-        
+            
         // Run the second query
         db.pool.query(query2, (error, rows, fields) => {
-            
+                
             // Save the foods
             let customers = rows;
-
+    
             // BEGINNING OF NEW CODE
-
+    
             // Construct an object for reference in the table
             // Array.map is awesome for doing something with each
-            // element of an array.
+            // element of an array
+                    
+    
             let customermap = {}
             customers.map(customer => {
                 let customer_id = parseInt(customer.customer_id, 10);
-
-                customermap[customer_id] = customer["user_id"];
+    
+                customermap[customer_id] = customer["first_name"] + " " + customer["last_name"];
             })
-
+    
             // Overwrite the homeworld ID with the name of the planet in the people object
             orders = orders.map(order => {
                 return Object.assign(order, {customer_id: customermap[order.customer_id]})
             })
-
+    
             // Run the third query
             db.pool.query(query3, (error, rows, fields) => {
-                
+                    
                 // Save the foods
                 let restaurants = rows;
-
-                // BEGINNING OF NEW CODE
-
-                // Construct an object for reference in the table
-                // Array.map is awesome for doing something with each
-                // element of an array.
+    
+                    // BEGINNING OF NEW CODE
+    
+                    // Construct an object for reference in the table
+                    // Array.map is awesome for doing something with each
+                    // element of an array.
                 let restaurantmap = {}
                 restaurants.map(restaurant => {
                     let restaurant_id = parseInt(restaurant.restaurant_id, 10);
-
+    
                     restaurantmap[restaurant_id] = restaurant["name"];
                 })
-
-                // Overwrite the homeworld ID with the name of the planet in the people object
+    
+                    // Overwrite the homeworld ID with the name of the planet in the people object
                 orders = orders.map(order => {
                     return Object.assign(order, {restaurant_id: restaurantmap[order.restaurant_id]})
                 })
-            
+                
                 db.pool.query(query4, (error, rows, fields) => {
-                    
+                        
                     // Save the foods
                     let couriers = rows;
-
+    
                     // BEGINNING OF NEW CODE
-
+    
                     // Construct an object for reference in the table
                     // Array.map is awesome for doing something with each
                     // element of an array.
                     let couriermap = {}
                     couriers.map(courier => {
                         let courier_id = parseInt(courier.courier_id, 10);
-
-                        couriermap[courier_id] = courier["email"];
+    
+                        couriermap[courier_id] = courier["first_name"] + " " + courier["last_name"];
                     })
-
-                    // Overwrite the homeworld ID with the name of the planet in the people object
+    
+                        // Overwrite the homeworld ID with the name of the planet in the people object
                     orders = orders.map(order => {
                         return Object.assign(order, {courier_id: couriermap[order.courier_id]})
                     })
-
+    
                     // END OF NEW CODE
-
+    
                     return res.render('orders', {data: orders, customers: customers, restaurants: restaurants, couriers: couriers});
                 }) 
             })
@@ -181,8 +183,6 @@ app.get('/orders', function(req, res)
     })                                           // will process this file, before sending the finished HTML to the client.
 });  
 
-
-  
 
 app.get('/foods', function(req, res)
     {  
@@ -866,6 +866,8 @@ app.post('/add-orders-ajax', function(req, res)
         }
     })
 });
+
+
 
 
 
